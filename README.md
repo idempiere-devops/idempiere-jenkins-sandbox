@@ -62,7 +62,8 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
         stages {
             stage('Build') {
                 steps {
-                    echo 'Building..'
+                    echo 'Hello World!'
+                    sh 'java --version'
                 }
             }
         }
