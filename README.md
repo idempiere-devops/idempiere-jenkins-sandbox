@@ -7,12 +7,12 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
 - [Vagrant](https://developer.hashicorp.com/vagrant/install#linux)
 - [Virtual Box](https://www.virtualbox.org/wiki/Linux_Downloads)
 
-## Getting Started
+## Getting Started: Jenkins
 
-1. Run the virtual machines (it'll take some minutes):
+1. Run the virtual machine (it'll take some minutes):
 
     ```shell
-    vagrant up
+    vagrant up jenkins
     ```
 
 2. Copy jenkins' admin password:
@@ -38,16 +38,15 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
 
     Install the plugins: `Docker` and `Docker Pipeline`.
 
-    Run:
+    When it finishes, run:
 
     ```shell
-    vagrant ssh jenkins -c "sudo usermod -aG docker jenkins"
-    vagrant ssh jenkins -c "sudo systemctl restart jenkins"
+    vagrant reload jenkins --no-provision
     ```
 
 5. Create a `test` pipeline:
 
-    On the Jenkins' landing page, click on *New Item* and put a name (ex: **test**).
+    On the Jenkins' landing page <http://localhost:9090/>, click on *New Item* and put a name (ex: **test**).
 
     Then select *Pipeline* and click on *OK*.
 
@@ -73,6 +72,14 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
     Then click on *Save*.
 
     Finally, click on *Build Now*.
+
+## Getting Started: iDempiere
+
+1. Run the virtual machine (it'll take some minutes):
+
+    ```shell
+    vagrant up idempiere
+    ```
 
 ## Common Commands
 
