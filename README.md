@@ -81,6 +81,10 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
     vagrant up idempiere
     ```
 
+2. Open idempiere:
+
+    Open <http://localhost:8080/>.
+
 ## Common Commands
 
 Start virtual machines:
