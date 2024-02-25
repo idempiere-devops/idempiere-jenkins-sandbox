@@ -2,16 +2,16 @@
 
 set -e
 
+# INSTALL DEPENDENCIES
+
 wget -O /usr/share/keyrings/postgresql-keyring.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
-echo deb [signed-by=/usr/share/keyrings/postgresql-keyring.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main | \
-    tee /etc/apt/sources.list.d/postgresql.list > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/postgresql-keyring.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/postgresql.list
 
 apt update -y
 apt install -y fontconfig openjdk-17-jdk-headless
 apt install -y postgresql-15
-systemctl enable postgresql
 
-echo "alter user postgres password 'postgres'" | su postgres -c "psql -U postgres"
+# CONFIGURE POSTGRES
 
 cat << EOF > /etc/postgresql/15/main/pg_hba.conf
 local   all             postgres                                peer
@@ -23,12 +23,10 @@ if ! grep "^listen_addresses = '\*'" /etc/postgresql/15/main/postgresql.conf ; t
     echo "listen_addresses = '*'" >> /etc/postgresql/15/main/postgresql.conf
 fi
 
+systemctl enable postgresql
 systemctl restart postgresql
 
-if ! id idempiere > /dev/null 2>&1; then
-    echo 'User idempiere not found'
-    adduser idempiere
-fi
+# INSTALL IDEMPIERE
 
 if [ ! -f idempiereServer11Daily.gtk.linux.x86_64.zip ]; then
     echo "Installer does not exist, downloading it"
@@ -39,6 +37,8 @@ jar xvf idempiereServer11Daily.gtk.linux.x86_64.zip
 rm -rf /opt/idempiere-server
 mv idempiere.gtk.linux.x86_64/idempiere-server /opt
 rm -rf idempiere.gtk.linux.x86_64
+
+# CONFIGURE IDEMPIERE
 
 cat << EOF > /opt/idempiere-server/idempiereEnv.properties
 #idempiereEnv.properties Template
@@ -109,6 +109,10 @@ ADEMPIERE_FTP_USER=anonymous
 ADEMPIERE_FTP_PASSWORD=user@host.com
 EOF
 
+# CONFIGURE DB
+
+sudo su postgres -c 'psql -U postgres -c "alter user postgres password '"'postgres'"'"'
+
 cd /opt/idempiere-server
 sh silent-setup-alt.sh
 
@@ -121,8 +125,22 @@ sh sign-database-build-alt.sh
 
 cp /opt/idempiere-server/utils/unix/idempiere_Debian.sh /etc/init.d/idempiere
 
+# ADD IDEMPIERE USER
+
+if ! id idempiere > /dev/null 2>&1; then
+    echo "User idempiere not found"
+    useradd --create-home -s /bin/bash idempiere
+fi
+
+if [ ! -f /home/idempiere/.ssh/idempiere ]; then
+    echo "Creating ssh key"
+    su idempiere -c "ssh-keygen -t ed25519 -f ~/.ssh/idempiere -N ''"
+fi
+
 chown -R idempiere:idempiere /opt/idempiere-server
+
+# START IDEMPIERE SERVICE
 
 systemctl daemon-reload
 systemctl enable idempiere
-systemctl start idempiere
+systemctl restart idempiere

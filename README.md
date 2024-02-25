@@ -1,4 +1,4 @@
-# idempiere-jenkins-sandbox
+# iDempiere/Jenkins Sandbox
 
 This repository aims to help you learn how to do CI/CD with iDempiere.
 
@@ -36,17 +36,14 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
 
     Search for **Docker**.
 
-    Install the plugins: `Docker` and `Docker Pipeline`.
+    Select: `Docker` and `Docker Pipeline`, and click on *Install*.
 
-    When it finishes, run:
-
-    ```shell
-    vagrant reload jenkins --no-provision
-    ```
+    Additional, on the installation page, check the option
+    *Restart Jenkins when installation is complete and no jobs are running*, and wait until it finishes.
 
 5. Create a `test` pipeline:
 
-    On the Jenkins' landing page <http://localhost:9090/>, click on *New Item* and put a name (ex: **test**).
+    On the Jenkins' landing page <http://localhost:9090/>, click on *New Item* and put a name (ex: `test`).
 
     Then select *Pipeline* and click on *OK*.
 
@@ -83,7 +80,11 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
 
 2. Open idempiere:
 
-    Open <http://localhost:8080/>.
+    Open <http://localhost:9080/>.
+
+## Documentation
+
+- [Add additional agent](doc/ADD_AGENT.md)
 
 ## Common Commands
 
@@ -102,7 +103,8 @@ vagrant halt
 Restart:
 
 ```shell
-vagrant reload --no-provision
+vagrant reload jenkins
+vagrant reload idempiere
 ```
 
 Show ports:
@@ -124,3 +126,32 @@ Destroy virtual machines:
 ```shell
 vagrant destroy
 ```
+
+## Troubleshot
+
+### IP Range Not Allowed
+
+If you receive this error:
+
+> The IP address configured for the host-only network is not within the
+allowed ranges. Please update the address used to be within the allowed
+ranges and run the command again.
+
+Yo can change the ips here:
+
+```ruby
+Vagrant.configure("2") do |config|
+  # ...
+  config.vm.define "jenkins" do |jenkins|
+    jenkins.vm.network "private_network", ip: "PUT A VALID IP"
+    # ...
+  end
+
+  config.vm.define "idempiere" do |idempiere|
+    idempiere.vm.network "private_network", ip: "PUT A VALID IP"
+    # ...
+  end
+end
+```
+
+Or visit: <https://www.virtualbox.org/manual/ch06.html#network_hostonly>.
