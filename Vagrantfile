@@ -18,5 +18,4 @@ Vagrant.configure("2") do |config|
     idempiere.vm.network "forwarded_port", guest: 8080, host: 9080
     idempiere.vm.provision "shell", path: "provision-idempiere.sh"
   end
-
 end
