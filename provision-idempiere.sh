@@ -32,7 +32,7 @@ IDEMPIERE_HOME=/opt/idempiere-server
 
 if [[ ! -f "build.zip" ]]; then
     echo "Installer does not exist, downloading it"
-    wget -O build.zip https://sourceforge.net/projects/idempiere/files/v11/daily-server/idempiereServer11Daily.gtk.linux.x86_64.zip
+    wget -q -O build.zip https://sourceforge.net/projects/idempiere/files/v11/daily-server/idempiereServer11Daily.gtk.linux.x86_64.zip
     jar xvf build.zip
     mv idempiere.gtk.linux.x86_64/idempiere-server /opt
     rm -rf idempiere.gtk.linux.x86_64
