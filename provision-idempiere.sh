@@ -29,15 +29,15 @@ systemctl restart postgresql
 # INSTALL IDEMPIERE
 
 IDEMPIERE_HOME=/opt/idempiere-server
-rm -rf $IDEMPIERE_HOME
+mkdir -p $IDEMPIERE_HOME
 
 if [[ ! -f "build.zip" ]]; then
     echo "Installer does not exist, downloading it"
     wget -O build.zip https://sourceforge.net/projects/idempiere/files/v11/daily-server/idempiereServer11Daily.gtk.linux.x86_64.zip
+    jar xvf build.zip
+    mv idempiere.gtk.linux.x86_64/idempiere-server /opt
+    rm -rf idempiere.gtk.linux.x86_64
 fi
-
-jar xvf build.zip
-mv idempiere.gtk.linux.x86_64/idempiere-server /opt
 
 # CONFIGURE IDEMPIERE
 
@@ -135,6 +135,7 @@ fi
 
 if [[ ! -f "$IDEMPIERE_HOME/.ssh/idempiere" ]]; then
     echo "Creating ssh key"
+    mkdir -p $IDEMPIERE_HOME/.ssh
     ssh-keygen -t ed25519 -f $IDEMPIERE_HOME/.ssh/idempiere -N ''
     cp $IDEMPIERE_HOME/.ssh/idempiere.pub $IDEMPIERE_HOME/.ssh/authorized_keys
 

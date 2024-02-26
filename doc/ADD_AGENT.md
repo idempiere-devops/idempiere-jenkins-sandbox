@@ -43,7 +43,7 @@
 
     Finally, click on `Save` (it'll take some time).
 
-3. Create a `test` pipeline:
+3. Create a test pipeline:
 
     On the Jenkins' landing page <http://localhost:9090/>, click on `New Item` and put `Test iDempiere Node` as name.
 

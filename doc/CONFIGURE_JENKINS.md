@@ -32,7 +32,7 @@
     Additional, on the installation page, check the option
     `Restart Jenkins when installation is complete and no jobs are running`, and wait until it finishes.
 
-5. Create a `test` pipeline:
+5. Create a test pipeline:
 
     On the Jenkins' landing page <http://localhost:9090/>, click on `New Item` and put `Test Docker` as name.
 
