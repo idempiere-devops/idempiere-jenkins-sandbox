@@ -8,7 +8,7 @@
     Copy the ssh private key:
 
     ```shell
-    vagrant ssh idempiere -c "sudo cat /home/idempiere/.ssh/idempiere" | clipcopy
+    vagrant ssh idempiere -c "sudo cat /opt/idempiere-server/.ssh/idempiere" | clipcopy
     ```
 
     Go to <http://localhost:9090/manage/credentials/store/system/domain/_/newCredentials>.
@@ -27,7 +27,7 @@
 
     Set `idempiere` to `Node name`, check `Permanent Agent`, and click on `Create`.
 
-    Set `/home/idempiere/jenkins` in the `Remote root directory` field.
+    Set `/opt/idempiere-server/jenkins` in the `Remote root directory` field.
 
     Set `idempiere` to `Labels`.
 
