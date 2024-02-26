@@ -1,7 +1,6 @@
-# >>> Vagrant
-# General
+# Vagrant
 .vagrant/
+*.log
 
-# Log files (if you are creating logs in debug mode, uncomment this)
-# *.log
-
+# SSH
+.ssh/
