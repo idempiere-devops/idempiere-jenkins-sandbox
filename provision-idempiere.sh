@@ -29,7 +29,6 @@ systemctl restart postgresql
 # INSTALL IDEMPIERE
 
 IDEMPIERE_HOME=/opt/idempiere-server
-mkdir -p $IDEMPIERE_HOME
 
 if [[ ! -f "build.zip" ]]; then
     echo "Installer does not exist, downloading it"
