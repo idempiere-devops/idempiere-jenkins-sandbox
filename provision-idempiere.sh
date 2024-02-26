@@ -8,7 +8,7 @@ wget -O /usr/share/keyrings/postgresql-keyring.asc https://www.postgresql.org/me
 echo "deb [signed-by=/usr/share/keyrings/postgresql-keyring.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/postgresql.list
 
 apt update -y
-apt install -y fontconfig openjdk-17-jdk-headless
+apt install -y git fontconfig openjdk-17-jdk-headless
 apt install -y postgresql-15
 
 # CONFIGURE POSTGRES
@@ -28,23 +28,24 @@ systemctl restart postgresql
 
 # INSTALL IDEMPIERE
 
-if [ ! -f idempiereServer11Daily.gtk.linux.x86_64.zip ]; then
+IDEMPIERE_HOME=/opt/idempiere-server
+rm -rf $IDEMPIERE_HOME
+
+if [[ ! -f "build.zip" ]]; then
     echo "Installer does not exist, downloading it"
-    wget https://sourceforge.net/projects/idempiere/files/v11/daily-server/idempiereServer11Daily.gtk.linux.x86_64.zip
+    wget -O build.zip https://sourceforge.net/projects/idempiere/files/v11/daily-server/idempiereServer11Daily.gtk.linux.x86_64.zip
 fi
 
-jar xvf idempiereServer11Daily.gtk.linux.x86_64.zip
-rm -rf /opt/idempiere-server
+jar xvf build.zip
 mv idempiere.gtk.linux.x86_64/idempiere-server /opt
-rm -rf idempiere.gtk.linux.x86_64
 
 # CONFIGURE IDEMPIERE
 
-cat << EOF > /opt/idempiere-server/idempiereEnv.properties
+cat << EOF > $IDEMPIERE_HOME/idempiereEnv.properties
 #idempiereEnv.properties Template
 
 #idempiere home
-IDEMPIERE_HOME=/opt/idempiere-server
+IDEMPIERE_HOME=$IDEMPIERE_HOME
 #Java home
 JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
@@ -77,7 +78,7 @@ ADEMPIERE_WEB_PORT=8080
 ADEMPIERE_SSL_PORT=8443
 
 #Keystore setting
-ADEMPIERE_KEYSTORE=/opt/idempiere-server/keystore/myKeystore
+ADEMPIERE_KEYSTORE=$IDEMPIERE_HOME/keystore/myKeystore
 ADEMPIERE_KEYSTOREWEBALIAS=adempiere
 ADEMPIERE_KEYSTORECODEALIAS=adempiere
 ADEMPIERE_KEYSTOREPASS=myPassword
@@ -113,31 +114,38 @@ EOF
 
 sudo su postgres -c 'psql -U postgres -c "alter user postgres password '"'postgres'"'"'
 
-cd /opt/idempiere-server
+cd $IDEMPIERE_HOME
 sh silent-setup-alt.sh
 
-cd /opt/idempiere-server/utils
+cd $IDEMPIERE_HOME/utils
 sh RUN_ImportIdempiere.sh
 sh RUN_SyncDB.sh
 
-cd /opt/idempiere-server
+cd $IDEMPIERE_HOME
 sh sign-database-build-alt.sh
 
-cp /opt/idempiere-server/utils/unix/idempiere_Debian.sh /etc/init.d/idempiere
+cp $IDEMPIERE_HOME/utils/unix/idempiere_Debian.sh /etc/init.d/idempiere
 
 # ADD IDEMPIERE USER
 
 if ! id idempiere > /dev/null 2>&1; then
     echo "User idempiere not found"
-    useradd --create-home -s /bin/bash idempiere
+    useradd -d $IDEMPIERE_HOME -s /bin/bash idempiere
 fi
 
-if [ ! -f /home/idempiere/.ssh/idempiere ]; then
+if [[ ! -f "$IDEMPIERE_HOME/.ssh/idempiere" ]]; then
     echo "Creating ssh key"
-    su idempiere -c "ssh-keygen -t ed25519 -f ~/.ssh/idempiere -N ''"
+    ssh-keygen -t ed25519 -f $IDEMPIERE_HOME/.ssh/idempiere -N ''
+    cp $IDEMPIERE_HOME/.ssh/idempiere.pub $IDEMPIERE_HOME/.ssh/authorized_keys
+
+    chown -R idempiere:idempiere $IDEMPIERE_HOME
+    chmod 700 $IDEMPIERE_HOME/.ssh
+    chmod 600 $IDEMPIERE_HOME/.ssh/idempiere
+    chmod 644 $IDEMPIERE_HOME/.ssh/idempiere.pub
+    chmod 644 $IDEMPIERE_HOME/.ssh/authorized_keys
 fi
 
-chown -R idempiere:idempiere /opt/idempiere-server
+chown -R idempiere:idempiere $IDEMPIERE_HOME
 
 # START IDEMPIERE SERVICE
 

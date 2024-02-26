@@ -1,6 +1,6 @@
 # Vagrant
 .vagrant/
+*.log
 
 # SSH
 .ssh/
-
