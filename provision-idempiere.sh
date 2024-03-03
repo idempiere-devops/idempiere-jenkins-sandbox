@@ -152,3 +152,25 @@ cp $IDEMPIERE_HOME/utils/unix/idempiere_Debian.sh /etc/init.d/idempiere
 systemctl daemon-reload
 systemctl enable idempiere
 systemctl restart idempiere
+
+# ADD JENKINS USER
+
+JENKINS_HOME=/home/jenkins
+
+if ! id jenkins > /dev/null 2>&1; then
+    echo "User jenkins not found"
+    useradd -d $JENKINS_HOME -s /bin/bash jenkins
+fi
+
+if [[ ! -f "$JENKINS_HOME/.ssh/jenkins" ]]; then
+    echo "Creating ssh key"
+    mkdir -p $JENKINS_HOME/.ssh
+    ssh-keygen -t ed25519 -f $JENKINS_HOME/.ssh/jenkins -N ''
+    cp $JENKINS_HOME/.ssh/jenkins.pub $JENKINS_HOME/.ssh/authorized_keys
+
+    chown -R jenkins:jenkins $JENKINS_HOME
+    chmod 700 $JENKINS_HOME/.ssh
+    chmod 600 $JENKINS_HOME/.ssh/jenkins
+    chmod 644 $JENKINS_HOME/.ssh/jenkins.pub
+    chmod 644 $JENKINS_HOME/.ssh/authorized_keys
+fi
