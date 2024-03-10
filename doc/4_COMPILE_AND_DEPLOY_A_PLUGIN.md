@@ -8,8 +8,8 @@
 
     Scroll down onto `Branch Sources`.
 
-    Click on `Add source` > `GitHub`.
+    Click on `Add source` > `Git`.
 
-    Put `https://github.com/idempiere-devops/idempiere-unit-test-sandbox.git` on `Repository HTTPS URL`.
+    Put `https://github.com/idempiere-devops/idempiere-unit-test-sandbox.git` on `Project Repository`.
 
     Finally click on `Save`.
