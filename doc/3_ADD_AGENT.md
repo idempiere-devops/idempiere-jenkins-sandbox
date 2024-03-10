@@ -71,3 +71,5 @@
     Then click on `Save`.
 
     Finally, click on `Build Now`.
+
+> [Next >](4_COMPILE_AND_DEPLOY_A_PLUGIN.md)

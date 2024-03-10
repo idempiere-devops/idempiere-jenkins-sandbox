@@ -9,3 +9,5 @@
 2. Open idempiere:
 
     Open <http://localhost:9080/>.
+
+> [Next >](3_ADD_AGENT.md)
