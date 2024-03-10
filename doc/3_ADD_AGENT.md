@@ -1,4 +1,4 @@
-# Add New Agent
+# Add an Agent
 
 1. Add a new credential:
 
