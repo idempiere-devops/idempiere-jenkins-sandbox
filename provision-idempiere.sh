@@ -8,7 +8,7 @@ wget -O /usr/share/keyrings/postgresql-keyring.asc https://www.postgresql.org/me
 echo "deb [signed-by=/usr/share/keyrings/postgresql-keyring.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/postgresql.list
 
 apt update -y
-apt install -y git fontconfig openjdk-17-jdk-headless
+apt install -y git expect fontconfig openjdk-17-jdk-headless
 apt install -y postgresql-15
 
 # CONFIGURE POSTGRES
@@ -136,7 +136,6 @@ if [[ ! -f "$IDEMPIERE_HOME/.ssh/idempiere" ]]; then
     ssh-keygen -t ed25519 -f $IDEMPIERE_HOME/.ssh/idempiere -N ''
     cp $IDEMPIERE_HOME/.ssh/idempiere.pub $IDEMPIERE_HOME/.ssh/authorized_keys
 
-    chown -R idempiere:idempiere $IDEMPIERE_HOME
     chmod 700 $IDEMPIERE_HOME/.ssh
     chmod 600 $IDEMPIERE_HOME/.ssh/idempiere
     chmod 644 $IDEMPIERE_HOME/.ssh/idempiere.pub
@@ -160,6 +159,8 @@ JENKINS_HOME=/home/jenkins
 if ! id jenkins > /dev/null 2>&1; then
     echo "User jenkins not found"
     useradd -d $JENKINS_HOME -s /bin/bash jenkins
+    mkdir -p $JENKINS_HOME/plugins
+    chmod 755 $JENKINS_HOME/plugins
 fi
 
 if [[ ! -f "$JENKINS_HOME/.ssh/jenkins" ]]; then
@@ -168,9 +169,10 @@ if [[ ! -f "$JENKINS_HOME/.ssh/jenkins" ]]; then
     ssh-keygen -t ed25519 -f $JENKINS_HOME/.ssh/jenkins -N ''
     cp $JENKINS_HOME/.ssh/jenkins.pub $JENKINS_HOME/.ssh/authorized_keys
 
-    chown -R jenkins:jenkins $JENKINS_HOME
     chmod 700 $JENKINS_HOME/.ssh
     chmod 600 $JENKINS_HOME/.ssh/jenkins
     chmod 644 $JENKINS_HOME/.ssh/jenkins.pub
     chmod 644 $JENKINS_HOME/.ssh/authorized_keys
 fi
+
+chown -R jenkins:jenkins $JENKINS_HOME
