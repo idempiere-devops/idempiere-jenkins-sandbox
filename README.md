@@ -9,9 +9,10 @@ This repository aims to help you learn how to do CI/CD with iDempiere.
 
 ## Steps
 
-1. [Configure Jenkins](doc/CONFIGURE_JENKINS.md)
-2. [Configure iDempiere](doc/CONFIGURE_IDEMPIERE.md)
-3. [Add additional agent](doc/ADD_AGENT.md)
+1. [Configure Jenkins](doc/1_CONFIGURE_JENKINS.md)
+2. [Configure iDempiere](doc/2_CONFIGURE_IDEMPIERE.md)
+3. [Add an Additional Agent](doc/3_ADD_AGENT.md)
+4. [Compile and Deploy Plugin](doc/4_COMPILE_AND_DEPLOY_A_PLUGIN.md)
 
 ## Common Commands
 

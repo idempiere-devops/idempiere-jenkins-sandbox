@@ -43,7 +43,7 @@
     ```groovy
     pipeline {
         agent {
-            docker { image 'amazoncorretto:17' }
+            docker { image 'eclipse-temurin:17-jdk' }
         }
 
         stages {

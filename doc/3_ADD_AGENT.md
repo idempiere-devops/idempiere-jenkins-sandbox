@@ -1,6 +1,6 @@
 # Add New Agent
 
-1. Add new credential:
+1. Add a new credential:
 
     In this step we are going to create a ssh credential for
     communicating both VMs.
@@ -8,14 +8,14 @@
     Copy the ssh private key:
 
     ```shell
-    vagrant ssh idempiere -c "sudo cat /opt/idempiere-server/.ssh/idempiere" | clipcopy
+    vagrant ssh idempiere -c "sudo cat /home/jenkins/.ssh/jenkins" | clipcopy
     ```
 
     Go to <http://localhost:9090/manage/credentials/store/system/domain/_/newCredentials>.
 
     In `Kind` select `SSH Username with private key`.
 
-    Set `idempiere` in the fields `ID` and `Username`.
+    Set `jenkins` in the fields `ID` and `Username`.
 
     Click on `Private Key` > `Enter directly` > `Add`, and paste the ssh private key.
 
@@ -27,7 +27,7 @@
 
     Set `idempiere` to `Node name`, check `Permanent Agent`, and click on `Create`.
 
-    Set `/opt/idempiere-server/jenkins` in the `Remote root directory` field.
+    Set `/home/jenkins/agent` in the `Remote root directory` field.
 
     Set `idempiere` to `Labels`.
 
@@ -37,11 +37,11 @@
 
     Set `192.168.56.20` in `Host` (or the idempiere vm's ip).
 
-    Select `idempiere` in the `Credentials` field.
+    Select `jenkins` in the `Credentials` field.
 
     Select `Non verifying Verification Strategy` in the `Host Key Verification Strategy` field.
 
-    Finally, click on `Save` (it'll take some time).
+    Finally, click on `Save` (it'll take some seconds to deploy the new agent).
 
 3. Create a test pipeline:
 
