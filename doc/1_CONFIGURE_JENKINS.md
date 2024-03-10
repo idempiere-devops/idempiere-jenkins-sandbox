@@ -21,13 +21,15 @@
 
     Then, you have to create the `First Admin User`.
 
-4. Install Docker Plugins:
+4. Install Plugins:
 
     Go to <http://localhost:9090/manage/pluginManager/available>.
 
-    Search for `Docker`.
+    Search for `Docker` and select `Docker` and `Docker Pipeline`
 
-    Select: `Docker` and `Docker Pipeline`, and click on `Install`.
+    Search for `Copy Artifact` and select `Copy Artifact`.
+
+    Click on `Install`.
 
     Additional, on the installation page, check the option
     `Restart Jenkins when installation is complete and no jobs are running`, and wait until it finishes.
