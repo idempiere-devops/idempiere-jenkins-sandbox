@@ -60,3 +60,5 @@
     Then click on `Save`.
 
     Finally, click on `Build Now`.
+
+> [Next](2_CONFIGURE_IDEMPIERE.md)
