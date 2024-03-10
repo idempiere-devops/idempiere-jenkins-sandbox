@@ -12,4 +12,6 @@
 
     Put `https://github.com/idempiere-devops/idempiere-unit-test-sandbox.git` on `Project Repository`.
 
+    Select `Clean before checkout` in `Behaviors` > `Add`.
+
     Finally click on `Save`.
